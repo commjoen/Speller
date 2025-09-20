@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speller - Multilingual Spelling Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Speller</h1>
+            <div class="language-selector">
+                <label for="language">Language:</label>
+                <select id="language">
+                    <option value="en">English</option>
+                    <option value="nl">Dutch</option>
+                    <option value="de">German</option>
+                </select>
+            </div>
+        </header>
+
+        <main class="game-area">
+            <div class="score-area">
+                <span>Score: <span id="score">0</span></span>
+                <span>Question: <span id="current-question">1</span> / <span id="total-questions">0</span></span>
+            </div>
+
+            <div class="image-container">
+                <img id="word-image" src="" alt="Word image" />
+            </div>
+
+            <div class="sentence-container">
+                <p id="sentence">Loading...</p>
+            </div>
+
+            <div class="input-container">
+                <input type="text" id="answer-input" placeholder="Type the missing word here..." />
+                <button id="check-button">Check</button>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="navigation">
+                <button id="next-button" style="display: none;">Next Question</button>
+                <button id="restart-button" style="display: none;">Restart Game</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
