@@ -1,5 +1,5 @@
-# Use Node.js Alpine as base image
-FROM node:18-alpine
+# Use Node.js as base image
+FROM node:24
 
 # Set working directory
 WORKDIR /app
@@ -8,14 +8,14 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies (including serve)
-RUN npm ci
+RUN npm install --global npm@10.8.2 && npm ci
 
 # Copy application files
 COPY . .
 
 # Create non-root user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S speller -u 1001
+RUN groupadd -g 1001 nodejs && \
+    useradd -r -u 1001 -g nodejs speller
 
 # Change ownership of the app directory
 RUN chown -R speller:nodejs /app
