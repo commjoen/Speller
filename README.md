@@ -2,6 +2,8 @@
 
 A multilingual spelling game that helps users learn vocabulary in English, Dutch, and German. Players see a sentence with a missing word and an accompanying image that provides a visual clue for the correct answer.
 
+🚀 **[Play the game live on GitHub Pages!](https://commjoen.github.io/Speller/)**
+
 ![Speller Game Screenshot](https://github.com/user-attachments/assets/154b5bc0-62b4-41b4-80b5-69f688f7965a)
 
 ## Features
@@ -31,9 +33,13 @@ A multilingual spelling game that helps users learn vocabulary in English, Dutch
 
 ## Getting Started
 
-### Running the Game
+### Play Online
 
-1. **Simple HTTP Server** (Recommended):
+🌐 **[Play immediately on GitHub Pages](https://commjoen.github.io/Speller/)** - No setup required!
+
+### Running Locally
+
+1. **Simple HTTP Server** (for development):
    ```bash
    # Using Python 3
    python3 -m http.server 8000
@@ -51,6 +57,9 @@ A multilingual spelling game that helps users learn vocabulary in English, Dutch
 
 ```
 Speller/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml    # GitHub Pages deployment workflow
 ├── index.html          # Main game interface
 ├── style.css           # Game styling
 ├── script.js           # Game logic and functionality
@@ -70,6 +79,17 @@ Speller/
 - **Images**: SVG format for scalability
 - **Data Format**: JSON for easy multilingual content management
 - **Browser Compatibility**: Modern browsers (Chrome, Firefox, Safari, Edge)
+- **Deployment**: Automatic deployment to GitHub Pages via GitHub Actions
+
+## Deployment
+
+The game is automatically deployed to GitHub Pages using GitHub Actions whenever changes are pushed to the main branch. The deployment workflow:
+
+1. **Triggers**: Automatically on push to main branch, or manually via GitHub Actions tab
+2. **Build**: Sets up GitHub Pages environment and prepares static files
+3. **Deploy**: Deploys the game to GitHub Pages at `https://commjoen.github.io/Speller/`
+
+No build process is required since this is a static HTML/CSS/JavaScript application.
 
 ## Adding New Content
 
