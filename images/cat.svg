@@ -1,0 +1,8 @@
+<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="200" fill="#f0f0f0" stroke="#ccc" stroke-width="2"/>
+  <circle cx="90" cy="80" r="25" fill="#ff6b6b"/>
+  <circle cx="210" cy="80" r="25" fill="#ff6b6b"/>
+  <path d="M 60 130 Q 150 100 240 130" stroke="#333" stroke-width="3" fill="none"/>
+  <ellipse cx="150" cy="160" rx="80" ry="25" fill="#ff9f9f"/>
+  <text x="150" y="185" text-anchor="middle" font-family="Arial" font-size="16" fill="#666">Cat</text>
+</svg>
