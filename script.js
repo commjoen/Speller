@@ -6,6 +6,9 @@ class SpellerGame {
         this.score = 0;
         this.questions = [];
         this.gameCompleted = false;
+        this.timeLimit = 30; // 30 seconds per question
+        this.timeRemaining = this.timeLimit;
+        this.timerInterval = null;
         
         this.initializeElements();
         this.loadData();
@@ -24,6 +27,7 @@ class SpellerGame {
         this.scoreElement = document.getElementById('score');
         this.currentQuestionElement = document.getElementById('current-question');
         this.totalQuestionsElement = document.getElementById('total-questions');
+        this.timerElement = document.getElementById('timer');
     }
     
     async loadData() {
@@ -110,9 +114,12 @@ class SpellerGame {
         this.answerInput.focus();
         
         this.updateQuestionCounter();
+        this.startTimer();
     }
     
     checkAnswer() {
+        this.stopTimer();
+        
         const question = this.questions[this.currentQuestionIndex];
         const userAnswer = this.answerInput.value.trim().toLowerCase();
         const correctAnswer = question.word.toLowerCase();
@@ -158,6 +165,7 @@ class SpellerGame {
     }
     
     endGame() {
+        this.stopTimer();
         this.gameCompleted = true;
         const percentage = Math.round((this.score / this.questions.length) * 100);
         
@@ -207,6 +215,7 @@ class SpellerGame {
         this.imageElement.style.display = 'block';
         this.feedbackElement.textContent = '';
         this.feedbackElement.className = 'feedback';
+        this.timerElement.classList.remove('warning', 'danger');
     }
     
     showPlaceholderImage() {
@@ -217,6 +226,63 @@ class SpellerGame {
         
         this.imageElement.style.display = 'none';
         this.imageElement.parentNode.appendChild(placeholder);
+    }
+    
+    startTimer() {
+        this.timeRemaining = this.timeLimit;
+        this.updateTimer();
+        
+        this.timerInterval = setInterval(() => {
+            this.timeRemaining--;
+            this.updateTimer();
+            
+            if (this.timeRemaining <= 0) {
+                this.timeUp();
+            }
+        }, 1000);
+    }
+    
+    stopTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+    }
+    
+    updateTimer() {
+        this.timerElement.textContent = this.timeRemaining;
+        
+        // Remove all timer classes
+        this.timerElement.classList.remove('warning', 'danger');
+        
+        // Add appropriate class based on time remaining
+        if (this.timeRemaining <= 5) {
+            this.timerElement.classList.add('danger');
+        } else if (this.timeRemaining <= 10) {
+            this.timerElement.classList.add('warning');
+        }
+    }
+    
+    timeUp() {
+        this.stopTimer();
+        this.showFeedback(false, `Time's up! The correct answer is "${this.questions[this.currentQuestionIndex].word}".`);
+        
+        // Fill in the sentence input with the correct answer
+        const sentenceInput = document.getElementById('sentence-input');
+        if (sentenceInput) {
+            sentenceInput.value = this.questions[this.currentQuestionIndex].word;
+            sentenceInput.style.background = '#f8d7da';
+            sentenceInput.style.color = '#721c24';
+        }
+        
+        this.checkButton.style.display = 'none';
+        this.answerInput.disabled = true;
+        
+        if (this.currentQuestionIndex < this.questions.length - 1) {
+            this.nextButton.style.display = 'inline-block';
+        } else {
+            this.restartButton.style.display = 'inline-block';
+        }
     }
 }
 

@@ -71,6 +71,29 @@ h1 {
     color: #333;
 }
 
+.timer-container {
+    position: relative;
+}
+
+#timer {
+    color: #28a745;
+    font-weight: bold;
+}
+
+#timer.warning {
+    color: #ffc107;
+}
+
+#timer.danger {
+    color: #dc3545;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
 .image-container {
     margin-bottom: 30px;
 }
