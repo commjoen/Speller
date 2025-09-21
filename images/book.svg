@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .text { font-family: Arial, sans-serif; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+      .bg { fill: #f0f4f7; stroke: #667eea; stroke-width: 3; }
+      .icon { fill: #667eea; stroke: #333; stroke-width: 1; }
+      .word-text { font-size: 16px; fill: #333; }
+      .category-text { font-size: 12px; fill: #666; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" x="10" y="10" width="180" height="180" rx="15"/>
+  
+  <!-- Icon representation -->
+  <rect class="icon" x="80" y="70" width="30" height="40" fill="#ff6b6b"/>
+                    <line class="icon" x1="85" y1="70" x2="85" y2="110" stroke="#8b0000" stroke-width="2"/>
+                    <rect class="icon" x="85" y="75" width="20" height="3" fill="white"/>
+                    <rect class="icon" x="85" y="85" width="15" height="2" fill="white"/>
+  
+  <!-- Word text at bottom -->
+  <text x="100" y="170" class="text word-text">book</text>
+  <text x="100" y="185" class="text category-text">school</text>
+</svg>

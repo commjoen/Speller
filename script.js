@@ -196,9 +196,8 @@ class SpellerGame {
             '<input type="text" id="sentence-input" class="sentence-input" readonly placeholder="___">');
         this.sentenceElement.innerHTML = sentenceWithInput;
         
-        // Load image
-        this.imageElement.src = question.image;
-        this.imageElement.alt = `Image for: ${question.word}`;
+        // Load image with error handling
+        this.loadImageWithFallback(question.image, question.word);
         
         // Clear previous answer
         this.answerInput.value = '';
@@ -206,6 +205,29 @@ class SpellerGame {
         
         this.updateQuestionCounter();
         this.startTimer();
+    }
+    
+    loadImageWithFallback(imageSrc, word) {
+        // Reset image state
+        this.imageElement.style.display = 'block';
+        this.imageElement.alt = `Image for: ${word}`;
+        
+        // Remove any existing error handlers
+        this.imageElement.onerror = null;
+        this.imageElement.onload = null;
+        
+        // Set up error handling
+        this.imageElement.onerror = () => {
+            console.warn(`Failed to load image: ${imageSrc}`);
+            this.showPlaceholderImage(word);
+        };
+        
+        this.imageElement.onload = () => {
+            console.log(`Successfully loaded image: ${imageSrc}`);
+        };
+        
+        // Attempt to load the image
+        this.imageElement.src = imageSrc;
     }
     
     checkAnswer() {
@@ -309,11 +331,62 @@ class SpellerGame {
         this.timerElement.classList.remove('warning', 'danger');
     }
     
-    showPlaceholderImage() {
+    showPlaceholderImage(word = 'Unknown') {
+        // Remove any existing placeholder
+        const existingPlaceholder = this.imageElement.parentNode.querySelector('.placeholder-image');
+        if (existingPlaceholder) {
+            existingPlaceholder.remove();
+        }
+        
         // Create a placeholder div if image fails to load
         const placeholder = document.createElement('div');
         placeholder.className = 'placeholder-image';
-        placeholder.textContent = 'Image not available';
+        placeholder.innerHTML = `
+            <div class="placeholder-content">
+                <div class="placeholder-icon">🖼️</div>
+                <div class="placeholder-text">${word}</div>
+                <div class="placeholder-subtitle">Image not available</div>
+            </div>
+        `;
+        
+        // Add styles for the placeholder
+        placeholder.style.cssText = `
+            width: 200px;
+            height: 200px;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            background: #f0f4f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        `;
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            .placeholder-content {
+                text-align: center;
+                color: #667eea;
+            }
+            .placeholder-icon {
+                font-size: 48px;
+                margin-bottom: 10px;
+            }
+            .placeholder-text {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 5px;
+                text-transform: capitalize;
+            }
+            .placeholder-subtitle {
+                font-size: 12px;
+                color: #999;
+            }
+        `;
+        if (!document.head.querySelector('style[data-placeholder]')) {
+            style.setAttribute('data-placeholder', 'true');
+            document.head.appendChild(style);
+        }
         
         this.imageElement.style.display = 'none';
         this.imageElement.parentNode.appendChild(placeholder);
@@ -414,7 +487,263 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Initialize the game when the page loads
+// PWA functionality
+class PWAManager {
+    constructor() {
+        this.deferredPrompt = null;
+        this.installButton = null;
+        this.init();
+    }
+    
+    init() {
+        this.registerServiceWorker();
+        this.setupInstallPrompt();
+        this.addInstallButton();
+        this.handleAppInstalled();
+    }
+    
+    async registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            try {
+                const registration = await navigator.serviceWorker.register('/sw.js');
+                console.log('Service Worker registered successfully:', registration);
+                
+                // Handle service worker updates
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            this.showUpdateAvailable();
+                        }
+                    });
+                });
+                
+                // Check for updates periodically
+                setInterval(() => {
+                    registration.update();
+                }, 60000); // Check every minute
+                
+            } catch (error) {
+                console.error('Service Worker registration failed:', error);
+            }
+        }
+    }
+    
+    setupInstallPrompt() {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt event fired');
+            e.preventDefault();
+            this.deferredPrompt = e;
+            this.showInstallButton();
+        });
+    }
+    
+    addInstallButton() {
+        // Create install button
+        this.installButton = document.createElement('button');
+        this.installButton.textContent = '📱 Install App';
+        this.installButton.id = 'install-button';
+        this.installButton.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            transition: background 0.3s ease;
+        `;
+        
+        this.installButton.addEventListener('mouseenter', () => {
+            this.installButton.style.background = '#45a049';
+        });
+        
+        this.installButton.addEventListener('mouseleave', () => {
+            this.installButton.style.background = '#4CAF50';
+        });
+        
+        this.installButton.addEventListener('click', () => {
+            this.installApp();
+        });
+        
+        document.body.appendChild(this.installButton);
+    }
+    
+    showInstallButton() {
+        if (this.installButton) {
+            this.installButton.style.display = 'block';
+        }
+    }
+    
+    hideInstallButton() {
+        if (this.installButton) {
+            this.installButton.style.display = 'none';
+        }
+    }
+    
+    async installApp() {
+        if (!this.deferredPrompt) {
+            console.log('No install prompt available');
+            return;
+        }
+        
+        try {
+            this.deferredPrompt.prompt();
+            const { outcome } = await this.deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+                this.hideInstallButton();
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+            
+            this.deferredPrompt = null;
+        } catch (error) {
+            console.error('Error during app installation:', error);
+        }
+    }
+    
+    handleAppInstalled() {
+        window.addEventListener('appinstalled', () => {
+            console.log('App was installed successfully');
+            this.hideInstallButton();
+            this.showInstalledMessage();
+        });
+    }
+    
+    showInstalledMessage() {
+        const message = document.createElement('div');
+        message.textContent = '🎉 App installed successfully!';
+        message.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1001;
+            font-size: 14px;
+            animation: slideIn 0.3s ease;
+        `;
+        
+        // Add animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.body.appendChild(message);
+        
+        // Remove message after 3 seconds
+        setTimeout(() => {
+            message.remove();
+        }, 3000);
+    }
+    
+    showUpdateAvailable() {
+        const updateBanner = document.createElement('div');
+        updateBanner.innerHTML = `
+            <div style="background: #ff9800; color: white; padding: 10px; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 1002;">
+                🔄 A new version is available! 
+                <button onclick="window.location.reload()" style="background: white; color: #ff9800; border: none; padding: 5px 10px; margin-left: 10px; border-radius: 3px; cursor: pointer;">
+                    Update Now
+                </button>
+                <button onclick="this.parentElement.remove()" style="background: none; color: white; border: 1px solid white; padding: 5px 10px; margin-left: 5px; border-radius: 3px; cursor: pointer;">
+                    Later
+                </button>
+            </div>
+        `;
+        document.body.insertBefore(updateBanner, document.body.firstChild);
+    }
+    
+    // Check if app is running as PWA
+    isRunningAsPWA() {
+        return window.matchMedia('(display-mode: standalone)').matches ||
+               window.navigator.standalone === true;
+    }
+    
+    // Handle network status
+    setupNetworkStatusHandling() {
+        const showNetworkStatus = (online) => {
+            const statusBar = document.getElementById('network-status') || document.createElement('div');
+            statusBar.id = 'network-status';
+            statusBar.style.cssText = `
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 10px;
+                text-align: center;
+                color: white;
+                font-size: 14px;
+                z-index: 1003;
+                transition: transform 0.3s ease;
+                ${online ? 'background: #4CAF50; transform: translateY(100%);' : 'background: #f44336; transform: translateY(0);'}
+            `;
+            statusBar.textContent = online ? '🌐 Back online!' : '📱 You are offline - using cached content';
+            
+            if (!document.getElementById('network-status')) {
+                document.body.appendChild(statusBar);
+            }
+            
+            if (online) {
+                setTimeout(() => {
+                    statusBar.style.transform = 'translateY(100%)';
+                    setTimeout(() => statusBar.remove(), 300);
+                }, 2000);
+            }
+        };
+        
+        window.addEventListener('online', () => showNetworkStatus(true));
+        window.addEventListener('offline', () => showNetworkStatus(false));
+        
+        // Show initial status if offline
+        if (!navigator.onLine) {
+            showNetworkStatus(false);
+        }
+    }
+}
+
+// Enhanced Game Loading with PWA features
 document.addEventListener('DOMContentLoaded', () => {
-    new SpellerGame();
+    // Initialize PWA functionality
+    const pwaManager = new PWAManager();
+    pwaManager.setupNetworkStatusHandling();
+    
+    // Initialize the game
+    const game = new SpellerGame();
+    
+    // Add PWA-specific features to the game
+    if (pwaManager.isRunningAsPWA()) {
+        console.log('Running as PWA');
+        // Add any PWA-specific game features here
+        document.body.classList.add('pwa-mode');
+    }
+    
+    // Handle URL parameters for shortcuts
+    const urlParams = new URLSearchParams(window.location.search);
+    const lang = urlParams.get('lang');
+    if (lang && ['en', 'nl', 'de'].includes(lang)) {
+        // Set the language from URL parameter
+        setTimeout(() => {
+            const languageSelect = document.getElementById('language');
+            if (languageSelect) {
+                languageSelect.value = lang;
+                languageSelect.dispatchEvent(new Event('change'));
+            }
+        }, 100);
+    }
 });

@@ -1,0 +1,64 @@
+{
+  "name": "Speller - Multilingual Spelling Game",
+  "short_name": "Speller",
+  "description": "A multilingual spelling game that helps users learn vocabulary in English, Dutch, and German",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["education", "games"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "images/apple.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png", 
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Speller game on desktop"
+    },
+    {
+      "src": "screenshot-narrow.png",
+      "sizes": "720x1280", 
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Speller game on mobile"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Start English Game",
+      "url": "/?lang=en",
+      "description": "Start playing in English"
+    },
+    {
+      "name": "Start Dutch Game", 
+      "url": "/?lang=nl",
+      "description": "Start playing in Dutch"
+    },
+    {
+      "name": "Start German Game",
+      "url": "/?lang=de", 
+      "description": "Start playing in German"
+    }
+  ]
+}
