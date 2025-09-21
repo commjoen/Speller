@@ -1,0 +1,33 @@
+{
+  "name": "speller-game",
+  "version": "1.0.0",
+  "description": "A multilingual spelling game that helps users learn vocabulary in English, Dutch, and German",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "serve": "npx serve -s . -l 8000",
+    "start": "npx serve -s . -l 8000"
+  },
+  "keywords": [
+    "spelling",
+    "game",
+    "multilingual",
+    "education",
+    "javascript"
+  ],
+  "author": "commjoen",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/test/setup.js"],
+    "testMatch": ["<rootDir>/test/**/*.test.js"]
+  }
+}

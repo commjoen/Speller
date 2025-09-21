@@ -59,18 +59,28 @@ A multilingual spelling game that helps users learn vocabulary in English, Dutch
 Speller/
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml    # GitHub Pages deployment workflow
-├── index.html          # Main game interface
-├── style.css           # Game styling
-├── script.js           # Game logic and functionality
-├── data.json           # Multilingual word data
-├── images/             # Word images
+│       ├── deploy.yml    # GitHub Pages deployment workflow
+│       ├── test.yml      # Automated testing workflow
+│       └── docker.yml    # Container build and push workflow
+├── test/                 # Test files
+│   ├── SpellerGame.js    # Testable version of game class
+│   ├── setup.js          # Jest test setup
+│   └── speller.test.js   # Unit tests
+├── images/               # Word images
 │   ├── cat.svg
 │   ├── house.svg
 │   ├── sun.svg
 │   ├── apple.svg
 │   └── fish.svg
-└── README.md           # This file
+├── index.html            # Main game interface
+├── style.css             # Game styling
+├── script.js             # Game logic and functionality
+├── data.json             # Multilingual word data
+├── package.json          # Node.js dependencies and scripts
+├── Dockerfile            # Container configuration
+├── .dockerignore         # Docker build exclusions
+├── .gitignore            # Git exclusions
+└── README.md             # This file
 ```
 
 ## Technical Details
@@ -80,6 +90,9 @@ Speller/
 - **Data Format**: JSON for easy multilingual content management
 - **Browser Compatibility**: Modern browsers (Chrome, Firefox, Safari, Edge)
 - **Deployment**: Automatic deployment to GitHub Pages via GitHub Actions
+- **Testing**: Jest framework with comprehensive unit tests
+- **Containerization**: Docker support with Node.js Alpine base image
+- **Registry**: GitHub Container Registry (GHCR) for container distribution
 
 ## Deployment
 
@@ -90,6 +103,46 @@ The game is automatically deployed to GitHub Pages using GitHub Actions whenever
 3. **Deploy**: Deploys the game to GitHub Pages at `https://commjoen.github.io/Speller/`
 
 No build process is required since this is a static HTML/CSS/JavaScript application.
+
+### Container Deployment
+
+The application is also available as a Docker container published to GitHub Container Registry:
+
+```bash
+# Pull and run the latest container
+docker pull ghcr.io/commjoen/speller:latest
+docker run -p 8080:8000 ghcr.io/commjoen/speller:latest
+
+# Access the game at http://localhost:8080
+```
+
+### Local Development
+
+1. **Clone and install dependencies**:
+   ```bash
+   git clone https://github.com/commjoen/Speller.git
+   cd Speller
+   npm install
+   ```
+
+2. **Run locally**:
+   ```bash
+   # Option 1: Using npm
+   npm start
+   
+   # Option 2: Using Docker
+   docker build -t speller-local .
+   docker run -p 8080:8000 speller-local
+   ```
+
+3. **Run tests**:
+   ```bash
+   # Run all tests
+   npm test
+   
+   # Run tests in watch mode
+   npm run test:watch
+   ```
 
 ## Adding New Content
 
