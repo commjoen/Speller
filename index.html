@@ -11,7 +11,7 @@
         <header>
             <h1>Speller</h1>
             <div class="language-selector">
-                <label for="language">Language:</label>
+                <label for="language" data-translate="language">Language:</label>
                 <select id="language">
                     <option value="en">English</option>
                     <option value="nl">Dutch</option>
@@ -22,9 +22,9 @@
 
         <main class="game-area">
             <div class="score-area">
-                <span>Score: <span id="score">0</span></span>
-                <span>Question: <span id="current-question">1</span> / <span id="total-questions">0</span></span>
-                <span class="timer-container">Time: <span id="timer">30</span>s</span>
+                <span><span data-translate="score">Score:</span> <span id="score">0</span></span>
+                <span><span data-translate="question">Question:</span> <span id="current-question">1</span> / <span id="total-questions">0</span></span>
+                <span class="timer-container"><span data-translate="time">Time:</span> <span id="timer">30</span>s</span>
             </div>
 
             <div class="image-container">
@@ -36,15 +36,15 @@
             </div>
 
             <div class="input-container">
-                <input type="text" id="answer-input" placeholder="Type the missing word here..." />
-                <button id="check-button">Check</button>
+                <input type="text" id="answer-input" data-translate-placeholder="inputPlaceholder" placeholder="Type the missing word here..." />
+                <button id="check-button" data-translate="check">Check</button>
             </div>
 
             <div class="feedback" id="feedback"></div>
 
             <div class="navigation">
-                <button id="next-button" style="display: none;">Next Question</button>
-                <button id="restart-button" style="display: none;">Restart Game</button>
+                <button id="next-button" data-translate="nextQuestion" style="display: none;">Next Question</button>
+                <button id="restart-button" data-translate="restartGame" style="display: none;">Restart Game</button>
             </div>
         </main>
     </div>

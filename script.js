@@ -9,10 +9,79 @@ class SpellerGame {
         this.timeLimit = 30; // 30 seconds per question
         this.timeRemaining = this.timeLimit;
         this.timerInterval = null;
+        this.translations = this.initTranslations();
         
         this.initializeElements();
         this.loadData();
         this.setupEventListeners();
+    }
+    
+    initTranslations() {
+        return {
+            en: {
+                language: "Language:",
+                score: "Score:",
+                question: "Question:",
+                time: "Time:",
+                check: "Check",
+                nextQuestion: "Next Question",
+                restartGame: "Restart Game",
+                inputPlaceholder: "Type the missing word here...",
+                correct: "Correct! The answer is",
+                incorrect: "Incorrect. The correct answer is",
+                timeUp: "Time's up! The correct answer is",
+                gameComplete: "Game Complete!",
+                finalScore: "Your final score:",
+                noQuestions: "No questions available for this language.",
+                errorLoading: "Error loading game data. Please refresh the page.",
+                excellentWork: "Excellent work! You're a spelling champion! 🏆",
+                greatJob: "Great job! You're doing well! 👍",
+                goodEffort: "Good effort! Keep practicing! 😊",
+                keepTrying: "Keep trying! Practice makes perfect! 💪"
+            },
+            nl: {
+                language: "Taal:",
+                score: "Score:",
+                question: "Vraag:",
+                time: "Tijd:",
+                check: "Controleren",
+                nextQuestion: "Volgende Vraag",
+                restartGame: "Herstart Spel",
+                inputPlaceholder: "Typ het ontbrekende woord hier...",
+                correct: "Correct! Het antwoord is",
+                incorrect: "Onjuist. Het juiste antwoord is",
+                timeUp: "Tijd is om! Het juiste antwoord is",
+                gameComplete: "Spel Voltooid!",
+                finalScore: "Je eindscore:",
+                noQuestions: "Geen vragen beschikbaar voor deze taal.",
+                errorLoading: "Fout bij het laden van spelgegevens. Ververs de pagina.",
+                excellentWork: "Uitstekend werk! Je bent een spelkampioen! 🏆",
+                greatJob: "Goed gedaan! Je doet het goed! 👍",
+                goodEffort: "Goede poging! Blijf oefenen! 😊",
+                keepTrying: "Blijf proberen! Oefening baart kunst! 💪"
+            },
+            de: {
+                language: "Sprache:",
+                score: "Punkte:",
+                question: "Frage:",
+                time: "Zeit:",
+                check: "Prüfen",
+                nextQuestion: "Nächste Frage",
+                restartGame: "Spiel Neustarten",
+                inputPlaceholder: "Gib das fehlende Wort hier ein...",
+                correct: "Richtig! Die Antwort ist",
+                incorrect: "Falsch. Die richtige Antwort ist",
+                timeUp: "Zeit ist um! Die richtige Antwort ist",
+                gameComplete: "Spiel Beendet!",
+                finalScore: "Deine Endpunktzahl:",
+                noQuestions: "Keine Fragen für diese Sprache verfügbar.",
+                errorLoading: "Fehler beim Laden der Spieldaten. Bitte lade die Seite neu.",
+                excellentWork: "Hervorragende Arbeit! Du bist ein Rechtschreibchampion! 🏆",
+                greatJob: "Großartige Arbeit! Du machst das gut! 👍",
+                goodEffort: "Gute Anstrengung! Weiter üben! 😊",
+                keepTrying: "Weiter versuchen! Übung macht den Meister! 💪"
+            }
+        };
     }
     
     initializeElements() {
@@ -34,16 +103,18 @@ class SpellerGame {
         try {
             const response = await fetch('data.json');
             this.data = await response.json();
+            this.updateUITranslations();
             this.startGame();
         } catch (error) {
             console.error('Error loading data:', error);
-            this.sentenceElement.textContent = 'Error loading game data. Please refresh the page.';
+            this.sentenceElement.textContent = this.getTranslation('errorLoading');
         }
     }
     
     setupEventListeners() {
         this.languageSelect.addEventListener('change', () => {
             this.currentLanguage = this.languageSelect.value;
+            this.updateUITranslations();
             this.startGame();
         });
         
@@ -75,14 +146,34 @@ class SpellerGame {
         });
     }
     
+    getTranslation(key) {
+        return this.translations[this.currentLanguage]?.[key] || this.translations.en[key] || key;
+    }
+    
+    updateUITranslations() {
+        // Update elements with data-translate attribute
+        document.querySelectorAll('[data-translate]').forEach(element => {
+            const key = element.getAttribute('data-translate');
+            element.textContent = this.getTranslation(key);
+        });
+        
+        // Update placeholder texts
+        document.querySelectorAll('[data-translate-placeholder]').forEach(element => {
+            const key = element.getAttribute('data-translate-placeholder');
+            element.placeholder = this.getTranslation(key);
+        });
+    }
+    
     startGame() {
         this.currentQuestionIndex = 0;
         this.score = 0;
         this.gameCompleted = false;
         this.questions = this.data[this.currentLanguage] || [];
         
+        this.updateUITranslations();
+        
         if (this.questions.length === 0) {
-            this.sentenceElement.textContent = 'No questions available for this language.';
+            this.sentenceElement.textContent = this.getTranslation('noQuestions');
             return;
         }
         
@@ -126,7 +217,7 @@ class SpellerGame {
         
         if (userAnswer === correctAnswer) {
             this.score++;
-            this.showFeedback(true, `Correct! The answer is "${question.word}".`);
+            this.showFeedback(true, `${this.getTranslation('correct')} "${question.word}".`);
             
             // Fill in the sentence input with the correct answer
             const sentenceInput = document.getElementById('sentence-input');
@@ -136,7 +227,7 @@ class SpellerGame {
                 sentenceInput.style.color = '#155724';
             }
         } else {
-            this.showFeedback(false, `Incorrect. The correct answer is "${question.word}".`);
+            this.showFeedback(false, `${this.getTranslation('incorrect')} "${question.word}".`);
             
             // Fill in the sentence input with the correct answer
             const sentenceInput = document.getElementById('sentence-input');
@@ -171,8 +262,8 @@ class SpellerGame {
         
         this.sentenceElement.innerHTML = `
             <div class="game-complete">
-                <h2>Game Complete!</h2>
-                <p>Your final score: ${this.score} / ${this.questions.length} (${percentage}%)</p>
+                <h2>${this.getTranslation('gameComplete')}</h2>
+                <p>${this.getTranslation('finalScore')} ${this.score} / ${this.questions.length} (${percentage}%)</p>
                 <p>${this.getPerformanceMessage(percentage)}</p>
             </div>
         `;
@@ -186,10 +277,10 @@ class SpellerGame {
     }
     
     getPerformanceMessage(percentage) {
-        if (percentage >= 90) return "Excellent work! You're a spelling champion! 🏆";
-        if (percentage >= 70) return "Great job! You're doing well! 👍";
-        if (percentage >= 50) return "Good effort! Keep practicing! 😊";
-        return "Keep trying! Practice makes perfect! 💪";
+        if (percentage >= 90) return this.getTranslation('excellentWork');
+        if (percentage >= 70) return this.getTranslation('greatJob');
+        if (percentage >= 50) return this.getTranslation('goodEffort');
+        return this.getTranslation('keepTrying');
     }
     
     showFeedback(isCorrect, message) {
@@ -265,7 +356,7 @@ class SpellerGame {
     
     timeUp() {
         this.stopTimer();
-        this.showFeedback(false, `Time's up! The correct answer is "${this.questions[this.currentQuestionIndex].word}".`);
+        this.showFeedback(false, `${this.getTranslation('timeUp')} "${this.questions[this.currentQuestionIndex].word}".`);
         
         // Fill in the sentence input with the correct answer
         const sentenceInput = document.getElementById('sentence-input');
