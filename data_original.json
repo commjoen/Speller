@@ -1,0 +1,98 @@
+{
+  "en": [
+    {
+      "sentence": "The {blank} is sleeping on the mat.",
+      "word": "cat",
+      "image": "images/cat.svg",
+      "hint": "A furry pet that meows"
+    },
+    {
+      "sentence": "I live in a big {blank} with my family.",
+      "word": "house",
+      "image": "images/house.svg",
+      "hint": "A place where people live"
+    },
+    {
+      "sentence": "The {blank} is shining brightly in the sky.",
+      "word": "sun",
+      "image": "images/sun.svg",
+      "hint": "The bright star that gives us light"
+    },
+    {
+      "sentence": "I like to eat red {blank} from the tree.",
+      "word": "apple",
+      "image": "images/apple.svg",
+      "hint": "A round fruit, often red or green"
+    },
+    {
+      "sentence": "The {blank} is swimming in the blue ocean.",
+      "word": "fish",
+      "image": "images/fish.svg",
+      "hint": "An animal that lives in water"
+    }
+  ],
+  "nl": [
+    {
+      "sentence": "De {blank} slaapt op de mat.",
+      "word": "kat",
+      "image": "images/cat.svg",
+      "hint": "Een harig huisdier dat miauwt"
+    },
+    {
+      "sentence": "Ik woon in een groot {blank} met mijn familie.",
+      "word": "huis",
+      "image": "images/house.svg",
+      "hint": "Een plaats waar mensen wonen"
+    },
+    {
+      "sentence": "De {blank} schijnt helder aan de hemel.",
+      "word": "zon",
+      "image": "images/sun.svg",
+      "hint": "De heldere ster die ons licht geeft"
+    },
+    {
+      "sentence": "Ik eet graag rode {blank} van de boom.",
+      "word": "appel",
+      "image": "images/apple.svg",
+      "hint": "Een rond fruit, vaak rood of groen"
+    },
+    {
+      "sentence": "De {blank} zwemt in de blauwe oceaan.",
+      "word": "vis",
+      "image": "images/fish.svg",
+      "hint": "Een dier dat in het water leeft"
+    }
+  ],
+  "de": [
+    {
+      "sentence": "Die {blank} schläft auf der Matte.",
+      "word": "katze",
+      "image": "images/cat.svg",
+      "hint": "Ein pelziges Haustier, das miaut"
+    },
+    {
+      "sentence": "Ich wohne in einem großen {blank} mit meiner Familie.",
+      "word": "haus",
+      "image": "images/house.svg",
+      "hint": "Ein Ort, wo Menschen leben"
+    },
+    {
+      "sentence": "Die {blank} scheint hell am Himmel.",
+      "word": "sonne",
+      "image": "images/sun.svg",
+      "hint": "Der helle Stern, der uns Licht gibt"
+    },
+    {
+      "sentence": "Ich esse gerne rote {blank} vom Baum.",
+      "word": "apfel",
+      "image": "images/apple.svg",
+      "hint": "Eine runde Frucht, oft rot oder grün"
+    },
+    {
+      "sentence": "Der {blank} schwimmt im blauen Ozean.",
+      "word": "fisch",
+      "image": "images/fish.svg",
+      "hint": "Ein Tier, das im Wasser lebt"
+    }
+  ]
+}
