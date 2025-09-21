@@ -1,0 +1,15 @@
+# Icon Placeholder
+
+This is a placeholder file. For a production PWA, you should:
+
+1. Convert images/apple.svg to PNG format at the required sizes:
+   - icon-192.png (192x192 pixels)
+   - icon-512.png (512x512 pixels)
+
+2. You can use online tools or command-line tools like:
+   - ImageMagick: convert apple.svg -resize 192x192 icon-192.png
+   - Or online SVG to PNG converters
+
+3. Replace this file with the actual PNG icons
+
+The app will still work without these PNG icons, but they improve the PWA experience on mobile devices.

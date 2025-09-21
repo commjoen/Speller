@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .text { font-family: Arial, sans-serif; font-weight: bold; text-anchor: middle; dominant-baseline: central; }
+      .bg { fill: #f0f4f7; stroke: #667eea; stroke-width: 3; }
+      .icon { fill: #667eea; stroke: #333; stroke-width: 1; }
+      .word-text { font-size: 16px; fill: #333; }
+      .category-text { font-size: 12px; fill: #666; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect class="bg" x="10" y="10" width="180" height="180" rx="15"/>
+  
+  <!-- Icon representation -->
+  <circle class="icon" cx="100" cy="80" r="30" fill="#667eea"/>
+            <text x="100" y="85" class="text" style="font-size: 36px; fill: white;">W</text>
+  
+  <!-- Word text at bottom -->
+  <text x="100" y="170" class="text word-text">walk</text>
+  <text x="100" y="185" class="text category-text">actions</text>
+</svg>
