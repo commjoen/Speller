@@ -176,3 +176,19 @@ This game is designed to help with:
 - **Spelling Practice**: Improve spelling accuracy
 - **Visual Association**: Connect words with images for better retention
 - **Language Comparison**: See how the same concepts are expressed in different languages
+
+## Security and Maintenance
+
+This repository includes automated security and dependency management:
+
+- **CodeQL Security Analysis**: Automated code scanning for security vulnerabilities and coding errors runs on every push, pull request, and weekly
+- **Renovate Bot**: Automated dependency updates for npm packages, Docker base images, and GitHub Actions
+- **Vulnerability Alerts**: Automatic security alerts for known vulnerabilities in dependencies
+
+### Dependency Management
+
+Renovate is configured to:
+- Group related updates together (e.g., all GitHub Actions updates in one PR)
+- Schedule updates for Monday mornings to minimize disruption
+- Automatically merge trusted updates like GitHub Actions
+- Maintain separate groups for development vs production dependencies

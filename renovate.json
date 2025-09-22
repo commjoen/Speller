@@ -1,0 +1,57 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "schedule": [
+    "before 4am on monday"
+  ],
+  "timezone": "UTC",
+  "labels": [
+    "dependencies"
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Dependency Dashboard",
+  "packageRules": [
+    {
+      "description": "Group Node.js Docker image updates",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["node"],
+      "groupName": "Node.js Docker updates"
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Group npm dev dependencies",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "groupName": "npm dev dependencies",
+      "rangeStrategy": "bump"
+    },
+    {
+      "description": "Group npm production dependencies", 
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "groupName": "npm production dependencies",
+      "rangeStrategy": "bump"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
+  "osvVulnerabilityAlerts": true,
+  "npm": {
+    "rangeStrategy": "bump"
+  },
+  "docker": {
+    "enabled": true
+  },
+  "dockerfile": {
+    "enabled": true
+  }
+}
