@@ -37,7 +37,8 @@ class SpellerGame {
                 excellentWork: "Excellent work! You're a spelling champion! 🏆",
                 greatJob: "Great job! You're doing well! 👍",
                 goodEffort: "Good effort! Keep practicing! 😊",
-                keepTrying: "Keep trying! Practice makes perfect! 💪"
+                keepTrying: "Keep trying! Practice makes perfect! 💪",
+                version: "Version:"
             },
             nl: {
                 language: "Taal:",
@@ -58,7 +59,8 @@ class SpellerGame {
                 excellentWork: "Uitstekend werk! Je bent een spelkampioen! 🏆",
                 greatJob: "Goed gedaan! Je doet het goed! 👍",
                 goodEffort: "Goede poging! Blijf oefenen! 😊",
-                keepTrying: "Blijf proberen! Oefening baart kunst! 💪"
+                keepTrying: "Blijf proberen! Oefening baart kunst! 💪",
+                version: "Versie:"
             },
             de: {
                 language: "Sprache:",
@@ -79,7 +81,8 @@ class SpellerGame {
                 excellentWork: "Hervorragende Arbeit! Du bist ein Rechtschreibchampion! 🏆",
                 greatJob: "Großartige Arbeit! Du machst das gut! 👍",
                 goodEffort: "Gute Anstrengung! Weiter üben! 😊",
-                keepTrying: "Weiter versuchen! Übung macht den Meister! 💪"
+                keepTrying: "Weiter versuchen! Übung macht den Meister! 💪",
+                version: "Version:"
             }
         };
     }
@@ -104,10 +107,25 @@ class SpellerGame {
             const response = await fetch('data.json');
             this.data = await response.json();
             this.updateUITranslations();
+            this.loadVersion();
             this.startGame();
         } catch (error) {
             console.error('Error loading data:', error);
             this.sentenceElement.textContent = this.getTranslation('errorLoading');
+        }
+    }
+    
+    async loadVersion() {
+        try {
+            const response = await fetch('version.json');
+            const versionData = await response.json();
+            const versionElement = document.getElementById('app-version');
+            if (versionElement && versionData.version) {
+                versionElement.textContent = versionData.version;
+            }
+        } catch (error) {
+            console.error('Error loading version:', error);
+            // Keep the default version from HTML if loading fails
         }
     }
     

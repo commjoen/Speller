@@ -255,3 +255,25 @@ button {
     font-size: 18px;
     margin: 0 auto;
 }
+
+/* Footer styling */
+.app-footer {
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.version-info {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.version-info span:first-child {
+    font-weight: 500;
+}
+
+#app-version {
+    font-family: 'Courier New', monospace;
+    color: #4a90e2;
+}
