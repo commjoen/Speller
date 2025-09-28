@@ -8,18 +8,19 @@ const STATIC_RESOURCES = [
   '/',
   '/index.html',
   '/style.css',
-  '/script.js', 
+  '/script.js',
   '/data.json',
-  '/manifest.json'
+  '/manifest.json',
 ];
 
 // Install event - cache essential resources
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
   console.log('Service Worker installing...');
-  
+
   event.waitUntil(
-    caches.open(STATIC_CACHE_NAME)
-      .then((cache) => {
+    caches
+      .open(STATIC_CACHE_NAME)
+      .then(cache => {
         console.log('Caching static resources...');
         return cache.addAll(STATIC_RESOURCES);
       })
@@ -27,21 +28,22 @@ self.addEventListener('install', (event) => {
         console.log('Static resources cached successfully');
         return self.skipWaiting(); // Activate immediately
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Failed to cache static resources:', error);
       })
   );
 });
 
 // Activate event - cleanup old caches
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', event => {
   console.log('Service Worker activating...');
-  
+
   event.waitUntil(
-    caches.keys()
-      .then((cacheNames) => {
+    caches
+      .keys()
+      .then(cacheNames => {
         return Promise.all(
-          cacheNames.map((cacheName) => {
+          cacheNames.map(cacheName => {
             // Delete old caches
             if (cacheName !== STATIC_CACHE_NAME && cacheName !== DYNAMIC_CACHE_NAME) {
               console.log('Deleting old cache:', cacheName);
@@ -59,27 +61,27 @@ self.addEventListener('activate', (event) => {
 });
 
 // Fetch event - serve from cache or network
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
-  
+
   // Handle different types of requests
   if (request.method !== 'GET') {
     return; // Only handle GET requests
   }
-  
+
   // Handle image requests with dynamic caching
   if (request.url.includes('/images/')) {
     event.respondWith(handleImageRequest(request));
     return;
   }
-  
+
   // Handle static resources with cache-first strategy
   if (STATIC_RESOURCES.some(resource => request.url.endsWith(resource))) {
     event.respondWith(handleStaticRequest(request));
     return;
   }
-  
+
   // Handle other requests with network-first strategy
   event.respondWith(handleDynamicRequest(request));
 });
@@ -92,26 +94,23 @@ async function handleStaticRequest(request) {
       console.log('Serving from cache:', request.url);
       return cachedResponse;
     }
-    
+
     console.log('Fetching from network:', request.url);
     const networkResponse = await fetch(request);
-    
+
     // Cache the response for future use
     const cache = await caches.open(STATIC_CACHE_NAME);
     cache.put(request, networkResponse.clone());
-    
+
     return networkResponse;
   } catch (error) {
     console.error('Failed to handle static request:', error);
-    
+
     // Return a fallback response for essential files
     if (request.url.endsWith('.html') || request.url.endsWith('/')) {
-      return new Response(
-        createOfflineHTML(),
-        { headers: { 'Content-Type': 'text/html' } }
-      );
+      return new Response(createOfflineHTML(), { headers: { 'Content-Type': 'text/html' } });
     }
-    
+
     throw error;
   }
 }
@@ -121,22 +120,22 @@ async function handleDynamicRequest(request) {
   try {
     console.log('Fetching from network:', request.url);
     const networkResponse = await fetch(request);
-    
+
     // Cache successful responses
     if (networkResponse.ok) {
       const cache = await caches.open(DYNAMIC_CACHE_NAME);
       cache.put(request, networkResponse.clone());
     }
-    
+
     return networkResponse;
   } catch (error) {
     console.log('Network failed, trying cache:', request.url);
-    
+
     const cachedResponse = await caches.match(request);
     if (cachedResponse) {
       return cachedResponse;
     }
-    
+
     console.error('Failed to handle dynamic request:', error);
     throw error;
   }
@@ -150,31 +149,28 @@ async function handleImageRequest(request) {
       console.log('Serving image from cache:', request.url);
       return cachedResponse;
     }
-    
+
     console.log('Fetching image from network:', request.url);
     const networkResponse = await fetch(request);
-    
+
     if (networkResponse.ok) {
       // Cache the image for future use
       const cache = await caches.open(DYNAMIC_CACHE_NAME);
       cache.put(request, networkResponse.clone());
       return networkResponse;
     }
-    
+
     throw new Error('Image not found');
   } catch (error) {
     console.error('Failed to load image:', request.url, error);
-    
+
     // Return a fallback SVG image
-    return new Response(
-      createFallbackSVG(request.url),
-      { 
-        headers: { 
-          'Content-Type': 'image/svg+xml',
-          'Cache-Control': 'max-age=86400' // Cache fallback for 1 day
-        } 
-      }
-    );
+    return new Response(createFallbackSVG(request.url), {
+      headers: {
+        'Content-Type': 'image/svg+xml',
+        'Cache-Control': 'max-age=86400', // Cache fallback for 1 day
+      },
+    });
   }
 }
 
@@ -182,7 +178,7 @@ async function handleImageRequest(request) {
 function createFallbackSVG(imageUrl) {
   const imageName = imageUrl.split('/').pop().replace('.svg', '');
   const firstLetter = imageName.charAt(0).toUpperCase();
-  
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -250,7 +246,7 @@ function createOfflineHTML() {
 }
 
 // Background sync for when connection is restored
-self.addEventListener('sync', (event) => {
+self.addEventListener('sync', event => {
   if (event.tag === 'background-sync') {
     console.log('Background sync triggered');
     event.waitUntil(
@@ -272,19 +268,19 @@ async function updateCaches() {
 }
 
 // Handle push notifications (for future features)
-self.addEventListener('push', (event) => {
+self.addEventListener('push', event => {
   console.log('Push notification received:', event);
   // Implementation for push notifications can be added here
 });
 
 // Message handling for communication with main thread
-self.addEventListener('message', (event) => {
+self.addEventListener('message', event => {
   console.log('Service Worker received message:', event.data);
-  
+
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
-  
+
   if (event.data && event.data.type === 'GET_VERSION') {
     event.ports[0].postMessage({ version: CACHE_NAME });
   }
