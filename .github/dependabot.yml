@@ -1,0 +1,70 @@
+# Dependabot configuration for automated dependency updates
+# Note: This repository also uses Renovate for dependency management
+# Dependabot is configured as a backup/alternative option
+
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "04:00"
+      timezone: "UTC"
+    # Reduce noise by grouping related updates
+    groups:
+      production-dependencies:
+        patterns:
+          - "*"
+        dependency-type: "production"
+      development-dependencies:
+        patterns:
+          - "*"
+        dependency-type: "development"
+    # Add labels for easy identification
+    labels:
+      - "dependencies"
+      - "dependabot"
+    # Limit open PRs to avoid conflicts with Renovate
+    open-pull-requests-limit: 3
+    # Review settings
+    reviewers:
+      - "commjoen"
+    # Auto-merge minor and patch updates for dev dependencies
+    auto-merge:
+      # Only auto-merge dev dependencies with minor/patch updates
+      dependency-type: "development"
+      update-type: "security"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "tuesday"
+      time: "04:00"
+      timezone: "UTC"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "dependabot"
+    open-pull-requests-limit: 2
+    reviewers:
+      - "commjoen"
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "tuesday"
+      time: "04:00"
+      timezone: "UTC"
+    labels:
+      - "dependencies"
+      - "docker"
+      - "dependabot"
+    open-pull-requests-limit: 1
+    reviewers:
+      - "commjoen"

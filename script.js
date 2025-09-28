@@ -522,7 +522,6 @@ class PWAManager {
                 setInterval(() => {
                     registration.update();
                 }, 60000); // Check every minute
-                
             } catch (error) {
                 console.error('Service Worker registration failed:', error);
             }
