@@ -1,15 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "schedule": [
-    "before 4am on monday"
-  ],
+  "extends": ["config:recommended"],
+  "schedule": ["before 4am on monday"],
   "timezone": "UTC",
-  "labels": [
-    "dependencies"
-  ],
+  "labels": ["dependencies"],
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Dependency Dashboard",
   "packageRules": [
@@ -34,7 +28,7 @@
       "rangeStrategy": "bump"
     },
     {
-      "description": "Group npm production dependencies", 
+      "description": "Group npm production dependencies",
       "matchManagers": ["npm"],
       "matchDepTypes": ["dependencies"],
       "groupName": "npm production dependencies",

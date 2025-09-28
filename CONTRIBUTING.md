@@ -13,12 +13,14 @@ Thank you for your interest in contributing to the Speller project! This documen
 ### Initial Setup
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/commjoen/Speller.git
    cd Speller
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -44,20 +46,26 @@ Thank you for your interest in contributing to the Speller project! This documen
 ### Code Quality Tools
 
 #### ESLint
+
 ESLint is configured with relaxed rules to maintain code quality without breaking existing functionality. The configuration focuses on:
+
 - Preventing undefined variables
 - Detecting unused variables (warnings only)
 - Maintaining consistent coding patterns
 
 #### Prettier
+
 Prettier is set up for code formatting with the following preferences:
+
 - Single quotes
 - Semicolons
 - 2-space indentation
 - 100 character line width
 
 #### Pre-commit Hooks
+
 Pre-commit hooks run automatically before each commit to:
+
 - Check YAML and JSON syntax
 - Validate file formatting
 - Run security checks
@@ -69,12 +77,14 @@ Pre-commit hooks run automatically before each commit to:
 This project uses both **Renovate** and **Dependabot** for dependency management:
 
 ### Renovate (Primary)
+
 - Runs weekly on Monday mornings
 - Groups related updates together
 - Auto-merges trusted GitHub Actions updates
 - Configured in `renovate.json`
 
 ### Dependabot (Backup)
+
 - Runs weekly on Tuesday mornings
 - Limited number of open PRs to avoid conflicts with Renovate
 - Configured in `.github/dependabot.yml`
@@ -84,6 +94,7 @@ This project uses both **Renovate** and **Dependabot** for dependency management
 The project uses Jest for testing with jsdom environment for DOM manipulation testing.
 
 ### Running Tests
+
 ```bash
 # Run all tests
 npm test
@@ -96,6 +107,7 @@ npm test -- --coverage
 ```
 
 ### Test Structure
+
 - Tests are located in the `test/` directory
 - Test files should end with `.test.js`
 - Use descriptive test names and group related tests
@@ -103,6 +115,7 @@ npm test -- --coverage
 ## Code Style Guidelines
 
 ### JavaScript
+
 - Use modern ES6+ features where appropriate
 - Prefer `const` over `let`, avoid `var`
 - Use meaningful variable and function names
@@ -110,6 +123,7 @@ npm test -- --coverage
 - Console statements are allowed for debugging (warnings only)
 
 ### Commits
+
 - Use clear, descriptive commit messages
 - Follow conventional commit format when possible
 - Keep commits focused on a single change

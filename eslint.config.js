@@ -24,11 +24,11 @@ export default [
         URLSearchParams: 'readonly',
         Event: 'readonly',
         Response: 'readonly',
-        
+
         // Service Worker globals
         self: 'readonly',
         caches: 'readonly',
-        
+
         // Node globals
         process: 'readonly',
         Buffer: 'readonly',
@@ -38,7 +38,7 @@ export default [
         module: 'readonly',
         require: 'readonly',
         exports: 'readonly',
-        
+
         // Jest globals
         describe: 'readonly',
         it: 'readonly',
@@ -49,61 +49,56 @@ export default [
         beforeAll: 'readonly',
         afterAll: 'readonly',
         jest: 'readonly',
-        
+
         // Project globals
         SpellerGame: 'readonly',
-        PWAManager: 'readonly'
-      }
+        PWAManager: 'readonly',
+      },
     },
     plugins: {
       import: importPlugin,
       promise: promisePlugin,
-      n: nPlugin
+      n: nPlugin,
     },
     rules: {
       // Allow console statements for debugging
       'no-console': 'warn',
-      
+
       // Allow unused vars that start with underscore
-      'no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
-      
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+
       // Focus on more important issues
       'no-undef': 'error',
       'no-redeclare': 'error',
-      
+
       // Import rules
       'import/no-unresolved': 'off', // We're not using modules in this project
       'import/named': 'off',
       'import/default': 'off',
       'import/namespace': 'off',
-      
+
       // Promise rules
       'promise/always-return': 'warn',
       'promise/catch-or-return': 'warn',
       'promise/param-names': 'warn',
       'promise/no-return-wrap': 'warn',
-      
+
       // Node rules
       'n/no-missing-import': 'off',
       'n/no-unpublished-import': 'off',
-      
+
       // Style rules - relaxed to maintain existing code
       'space-before-function-paren': 'off',
       'comma-dangle': 'off',
-      'semi': 'off',
-      'indent': 'off',
-      'quotes': 'off',
+      semi: 'off',
+      indent: 'off',
+      quotes: 'off',
       'no-trailing-spaces': 'off',
       'no-multiple-empty-lines': 'off',
-      'eol-last': 'off'
-    }
+      'eol-last': 'off',
+    },
   },
   {
-    ignores: [
-      'node_modules/',
-      'coverage/',
-      'dist/',
-      '*.min.js'
-    ]
-  }
+    ignores: ['node_modules/', 'coverage/', 'dist/', '*.min.js'],
+  },
 ];

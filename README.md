@@ -40,13 +40,14 @@ A multilingual spelling game that helps users learn vocabulary in English, Dutch
 ### Running Locally
 
 1. **Simple HTTP Server** (for development):
+
    ```bash
    # Using Python 3
    python3 -m http.server 8000
-   
+
    # Using Python 2
    python -m SimpleHTTPServer 8000
-   
+
    # Using Node.js (if you have it installed)
    npx http-server
    ```
@@ -119,6 +120,7 @@ docker run -p 8080:8000 ghcr.io/commjoen/speller:latest
 ### Local Development
 
 1. **Clone and install dependencies**:
+
    ```bash
    git clone https://github.com/commjoen/Speller.git
    cd Speller
@@ -126,37 +128,40 @@ docker run -p 8080:8000 ghcr.io/commjoen/speller:latest
    ```
 
 2. **Run locally**:
+
    ```bash
    # Option 1: Using npm
    npm start
-   
+
    # Option 2: Using Docker
    docker build -t speller-local .
    docker run -p 8080:8000 speller-local
    ```
 
 3. **Run tests**:
+
    ```bash
    # Run all tests
    npm test
-   
+
    # Run tests in watch mode
    npm run test:watch
    ```
 
 4. **Development Tools**:
+
    ```bash
    # Install pre-commit hooks (requires pip install pre-commit)
    pre-commit install
-   
+
    # Run linting
    npm run lint
    npm run lint:fix
-   
+
    # Format code
    npm run format
    npm run format:check
-   
+
    # Run pre-commit hooks manually
    pre-commit run --all-files
    ```
@@ -189,6 +194,7 @@ To add new words or languages, edit the `data.json` file:
 ## Educational Value
 
 This game is designed to help with:
+
 - **Vocabulary Building**: Learn new words in multiple languages
 - **Spelling Practice**: Improve spelling accuracy
 - **Visual Association**: Connect words with images for better retention
@@ -205,6 +211,7 @@ This repository includes automated security and dependency management:
 ### Dependency Management
 
 Renovate is configured to:
+
 - Group related updates together (e.g., all GitHub Actions updates in one PR)
 - Schedule updates for Monday mornings to minimize disruption
 - Automatically merge trusted updates like GitHub Actions

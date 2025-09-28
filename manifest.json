@@ -23,7 +23,7 @@
       "type": "image/png"
     },
     {
-      "src": "icon-512.png", 
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -38,7 +38,7 @@
     },
     {
       "src": "screenshot-narrow.png",
-      "sizes": "720x1280", 
+      "sizes": "720x1280",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Speller game on mobile"
@@ -51,13 +51,13 @@
       "description": "Start playing in English"
     },
     {
-      "name": "Start Dutch Game", 
+      "name": "Start Dutch Game",
       "url": "/?lang=nl",
       "description": "Start playing in Dutch"
     },
     {
       "name": "Start German Game",
-      "url": "/?lang=de", 
+      "url": "/?lang=de",
       "description": "Start playing in German"
     }
   ]
