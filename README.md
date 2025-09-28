@@ -14,6 +14,8 @@ A multilingual spelling game that helps users learn vocabulary in English, Dutch
 - **Score Tracking**: Keep track of correct answers
 - **Responsive Design**: Works on desktop and mobile devices
 - **Immediate Feedback**: Get instant feedback on your answers
+- **Semantic Versioning**: Automatic version management with release notes
+- **Version Display**: Current app version shown in footer
 
 ## How to Play
 
@@ -103,6 +105,26 @@ The game is automatically deployed to GitHub Pages using GitHub Actions whenever
 3. **Deploy**: Deploys the game to GitHub Pages at `https://commjoen.github.io/Speller/`
 
 No build process is required since this is a static HTML/CSS/JavaScript application.
+
+### Semantic Versioning
+
+The project uses semantic versioning with automated releases via GitHub Actions:
+
+- **Automatic Releases**: Version bumps and releases are triggered by conventional commits
+- **Version Display**: The current version is displayed in the app footer
+- **Release Notes**: Automatically generated for each release
+
+#### Conventional Commits
+- `feat: description` → minor version bump (new features)
+- `fix: description` → patch version bump (bug fixes)  
+- `feat!: description` or `BREAKING CHANGE:` → major version bump (breaking changes)
+
+Example:
+```bash
+git commit -m "feat: add new spelling difficulty levels"  # → v1.1.0
+git commit -m "fix: correct timer display issue"          # → v1.0.1
+git commit -m "feat!: redesign game interface"            # → v2.0.0
+```
 
 ### Container Deployment
 

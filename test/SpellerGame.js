@@ -40,6 +40,20 @@ class SpellerGame {
         }
     }
     
+    async loadVersion() {
+        try {
+            const response = await fetch('version.json');
+            const versionData = await response.json();
+            const versionElement = document.getElementById('app-version');
+            if (versionElement && versionData.version) {
+                versionElement.textContent = versionData.version;
+            }
+        } catch (error) {
+            console.error('Error loading version:', error);
+            // Keep the default version from HTML if loading fails
+        }
+    }
+    
     setupEventListeners() {
         this.languageSelect.addEventListener('change', () => {
             this.currentLanguage = this.languageSelect.value;

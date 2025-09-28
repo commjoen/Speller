@@ -251,4 +251,61 @@ describe('SpellerGame', () => {
       expect(game.imageElement.parentNode.appendChild).toHaveBeenCalledWith(mockDiv);
     });
   });
+
+  describe('Version Loading', () => {
+    beforeEach(() => {
+      // Mock version element
+      const mockVersionElement = { textContent: '1.0.0' };
+      global.document.getElementById = jest.fn((id) => {
+        if (id === 'app-version') return mockVersionElement;
+        return null;
+      });
+    });
+
+    test('should load version from version.json successfully', async () => {
+      // Mock successful fetch
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          json: () => Promise.resolve({ version: '2.1.0' })
+        })
+      );
+
+      await game.loadVersion();
+      
+      expect(fetch).toHaveBeenCalledWith('version.json');
+      expect(document.getElementById).toHaveBeenCalledWith('app-version');
+      expect(document.getElementById('app-version').textContent).toBe('2.1.0');
+    });
+
+    test('should handle version loading errors gracefully', async () => {
+      // Mock failed fetch
+      global.fetch = jest.fn(() => Promise.reject(new Error('Network error')));
+      
+      // Mock console.error to avoid test output pollution
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      
+      await game.loadVersion();
+      
+      expect(fetch).toHaveBeenCalledWith('version.json');
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Error loading version:', expect.any(Error));
+      
+      consoleErrorSpy.mockRestore();
+    });
+
+    test('should handle missing version element gracefully', async () => {
+      // Mock version element not found
+      global.document.getElementById = jest.fn(() => null);
+      global.fetch = jest.fn(() =>
+        Promise.resolve({
+          json: () => Promise.resolve({ version: '2.1.0' })
+        })
+      );
+
+      await game.loadVersion();
+      
+      expect(fetch).toHaveBeenCalledWith('version.json');
+      expect(document.getElementById).toHaveBeenCalledWith('app-version');
+      // Should not throw error when element is missing
+    });
+  });
 });
