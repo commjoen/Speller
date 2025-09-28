@@ -7,7 +7,12 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "serve": "npx serve -s . -l 8000",
-    "start": "npx serve -s . -l 8000"
+    "start": "npx serve -s . -l 8000",
+    "lint": "eslint *.js test/*.js",
+    "lint:fix": "eslint *.js test/*.js --fix",
+    "format": "prettier --write *.js *.json *.md test/*.js",
+    "format:check": "prettier --check *.js *.json *.md test/*.js",
+    "prepare": "which pre-commit > /dev/null && pre-commit install || echo 'pre-commit not installed, skipping hooks setup'"
   },
   "keywords": [
     "spelling",
@@ -19,8 +24,14 @@
   "author": "commjoen",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.3.3"
   },
   "dependencies": {
     "serve": "^14.2.1"

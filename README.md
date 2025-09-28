@@ -144,6 +144,23 @@ docker run -p 8080:8000 ghcr.io/commjoen/speller:latest
    npm run test:watch
    ```
 
+4. **Development Tools**:
+   ```bash
+   # Install pre-commit hooks (requires pip install pre-commit)
+   pre-commit install
+   
+   # Run linting
+   npm run lint
+   npm run lint:fix
+   
+   # Format code
+   npm run format
+   npm run format:check
+   
+   # Run pre-commit hooks manually
+   pre-commit run --all-files
+   ```
+
 ## Adding New Content
 
 To add new words or languages, edit the `data.json` file:

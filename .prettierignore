@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Generated files
+*.min.js
+*.min.css
+
+# Config files that should maintain their format
+.github/workflows/
+.pre-commit-config.yaml
+
+# Large data files
+data_*.json
