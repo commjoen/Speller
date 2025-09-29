@@ -9,10 +9,85 @@ class SpellerGame {
     this.score = 0;
     this.questions = [];
     this.gameCompleted = false;
+    this.timeLimit = 30; // 30 seconds per question
+    this.timeRemaining = this.timeLimit;
+    this.timerInterval = null;
+    this.translations = this.initTranslations();
 
     this.initializeElements();
     this.loadData();
     this.setupEventListeners();
+  }
+
+  initTranslations() {
+    return {
+      en: {
+        language: 'Language:',
+        version: 'Version:',
+        score: 'Score:',
+        question: 'Question:',
+        time: 'Time:',
+        check: 'Check',
+        nextQuestion: 'Next Question',
+        restartGame: 'Restart Game',
+        inputPlaceholder: 'Type the missing word here...',
+        correct: 'Correct! The answer is',
+        incorrect: 'Incorrect. The correct answer is',
+        timeUp: "Time's up! The correct answer is",
+        gameComplete: 'Game Complete!',
+        finalScore: 'Your final score:',
+        noQuestions: 'No questions available for this language.',
+        errorLoading: 'Error loading game data. Please refresh the page.',
+        excellentWork: "Excellent work! You're a spelling champion! 🏆",
+        greatJob: "Great job! You're doing well! 👍",
+        goodEffort: 'Good effort! Keep practicing! 😊',
+        keepTrying: 'Keep trying! Practice makes perfect! 💪',
+      },
+      nl: {
+        language: 'Taal:',
+        version: 'Versie:',
+        score: 'Score:',
+        question: 'Vraag:',
+        time: 'Tijd:',
+        check: 'Controleren',
+        nextQuestion: 'Volgende Vraag',
+        restartGame: 'Herstart Spel',
+        inputPlaceholder: 'Typ het ontbrekende woord hier...',
+        correct: 'Correct! Het antwoord is',
+        incorrect: 'Incorrect. Het juiste antwoord is',
+        timeUp: 'Tijd is om! Het juiste antwoord is',
+        gameComplete: 'Spel Voltooid!',
+        finalScore: 'Je eindscore:',
+        noQuestions: 'Geen vragen beschikbaar voor deze taal.',
+        errorLoading: 'Fout bij het laden van spelgegevens. Ververs de pagina.',
+        excellentWork: 'Uitstekend werk! Je bent een spelkampioen! 🏆',
+        greatJob: 'Goed gedaan! Je doet het goed! 👍',
+        goodEffort: 'Goede poging! Blijf oefenen! 😊',
+        keepTrying: 'Blijf proberen! Oefening baart kunst! 💪',
+      },
+      de: {
+        language: 'Sprache:',
+        version: 'Version:',
+        score: 'Punkte:',
+        question: 'Frage:',
+        time: 'Zeit:',
+        check: 'Prüfen',
+        nextQuestion: 'Nächste Frage',
+        restartGame: 'Spiel Neustarten',
+        inputPlaceholder: 'Gib das fehlende Wort hier ein...',
+        correct: 'Richtig! Die Antwort ist',
+        incorrect: 'Falsch. Die richtige Antwort ist',
+        timeUp: 'Zeit ist um! Die richtige Antwort ist',
+        gameComplete: 'Spiel Beendet!',
+        finalScore: 'Deine Endpunktzahl:',
+        noQuestions: 'Keine Fragen für diese Sprache verfügbar.',
+        errorLoading: 'Fehler beim Laden der Spieldaten. Bitte lade die Seite neu.',
+        excellentWork: 'Hervorragende Arbeit! Du bist ein Rechtschreibchampion! 🏆',
+        greatJob: 'Großartige Arbeit! Du machst das gut! 👍',
+        goodEffort: 'Gute Anstrengung! Weiter üben! 😊',
+        keepTrying: 'Weiter versuchen! Übung macht den Meister! 💪',
+      },
+    };
   }
 
   initializeElements() {
@@ -27,17 +102,58 @@ class SpellerGame {
     this.scoreElement = document.getElementById('score');
     this.currentQuestionElement = document.getElementById('current-question');
     this.totalQuestionsElement = document.getElementById('total-questions');
+    this.timerElement = document.getElementById('timer');
+    this.versionElement = document.getElementById('app-version');
   }
 
   async loadData() {
     try {
       const response = await fetch('data.json');
       this.data = await response.json();
+      await this.loadVersion();
+      this.updateUITranslations();
       this.startGame();
     } catch (error) {
       console.error('Error loading data:', error);
-      this.sentenceElement.textContent = 'Error loading game data. Please refresh the page.';
+      this.sentenceElement.textContent = this.getTranslation('errorLoading');
     }
+  }
+
+  async loadVersion() {
+    try {
+      const response = await fetch('package.json');
+      const packageData = await response.json();
+      this.version = packageData.version;
+      if (this.versionElement) {
+        this.versionElement.textContent = this.version;
+      }
+    } catch (error) {
+      console.error('Error loading version:', error);
+      this.version = '1.0.0'; // fallback version
+      if (this.versionElement) {
+        this.versionElement.textContent = this.version;
+      }
+    }
+  }
+
+  getTranslation(key) {
+    return this.translations[this.currentLanguage][key] || key;
+  }
+
+  updateUITranslations() {
+    // Update translatable elements
+    const translatableElements = document.querySelectorAll('[data-translate]');
+    translatableElements.forEach(element => {
+      const key = element.getAttribute('data-translate');
+      element.textContent = this.getTranslation(key);
+    });
+
+    // Update placeholder text
+    const placeholderElements = document.querySelectorAll('[data-translate-placeholder]');
+    placeholderElements.forEach(element => {
+      const key = element.getAttribute('data-translate-placeholder');
+      element.placeholder = this.getTranslation(key);
+    });
   }
 
   setupEventListeners() {

@@ -20,6 +20,7 @@ class SpellerGame {
     return {
       en: {
         language: 'Language:',
+        version: 'Version:',
         score: 'Score:',
         question: 'Question:',
         time: 'Time:',
@@ -41,6 +42,7 @@ class SpellerGame {
       },
       nl: {
         language: 'Taal:',
+        version: 'Versie:',
         score: 'Score:',
         question: 'Vraag:',
         time: 'Tijd:',
@@ -62,6 +64,7 @@ class SpellerGame {
       },
       de: {
         language: 'Sprache:',
+        version: 'Version:',
         score: 'Punkte:',
         question: 'Frage:',
         time: 'Zeit:',
@@ -97,17 +100,36 @@ class SpellerGame {
     this.currentQuestionElement = document.getElementById('current-question');
     this.totalQuestionsElement = document.getElementById('total-questions');
     this.timerElement = document.getElementById('timer');
+    this.versionElement = document.getElementById('app-version');
   }
 
   async loadData() {
     try {
       const response = await fetch('data.json');
       this.data = await response.json();
+      await this.loadVersion();
       this.updateUITranslations();
       this.startGame();
     } catch (error) {
       console.error('Error loading data:', error);
       this.sentenceElement.textContent = this.getTranslation('errorLoading');
+    }
+  }
+
+  async loadVersion() {
+    try {
+      const response = await fetch('package.json');
+      const packageData = await response.json();
+      this.version = packageData.version;
+      if (this.versionElement) {
+        this.versionElement.textContent = this.version;
+      }
+    } catch (error) {
+      console.error('Error loading version:', error);
+      this.version = '1.0.0'; // fallback version
+      if (this.versionElement) {
+        this.versionElement.textContent = this.version;
+      }
     }
   }
 
