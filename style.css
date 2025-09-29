@@ -36,6 +36,16 @@ h1 {
     margin-bottom: 15px;
 }
 
+.version-display {
+    font-size: 0.8em;
+    color: #888;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
 .language-selector {
     display: flex;
     justify-content: center;

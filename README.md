@@ -208,6 +208,32 @@ This repository includes automated security and dependency management:
 - **Renovate Bot**: Automated dependency updates for npm packages, Docker base images, and GitHub Actions
 - **Vulnerability Alerts**: Automatic security alerts for known vulnerabilities in dependencies
 
+### Versioning and Releases
+
+The project uses [Semantic Versioning](https://semver.org/) and automated releases:
+
+- **Semantic Release**: Automatically generates version numbers and changelogs based on commit messages
+- **Version Display**: The current version is displayed in the web app UI with multilingual support
+- **Automated Tagging**: GitHub releases are automatically created with each version bump
+- **Changelog**: All changes are documented in `CHANGELOG.md`
+
+#### Release Process
+
+Releases are triggered automatically when changes are pushed to the `main` branch:
+
+1. **Commit Analysis**: Semantic Release analyzes commit messages to determine version bump
+2. **Version Update**: Updates `package.json` and generates changelog
+3. **GitHub Release**: Creates a tagged release with release notes
+4. **NPM Publish**: Publishes the package to npm (if configured)
+
+#### Version Display
+
+The application displays the current version in the header:
+
+- **English**: "Version: X.Y.Z"
+- **Dutch**: "Versie: X.Y.Z"  
+- **German**: "Version: X.Y.Z"
+
 ### Dependency Management
 
 Renovate is configured to:
