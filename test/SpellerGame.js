@@ -24,6 +24,7 @@ class SpellerGame {
       en: {
         language: 'Language:',
         version: 'Version:',
+        enableTimer: 'Enable Timer',
         score: 'Score:',
         question: 'Question:',
         time: 'Time:',
@@ -46,6 +47,7 @@ class SpellerGame {
       nl: {
         language: 'Taal:',
         version: 'Versie:',
+        enableTimer: 'Timer Inschakelen',
         score: 'Score:',
         question: 'Vraag:',
         time: 'Tijd:',
@@ -68,6 +70,7 @@ class SpellerGame {
       de: {
         language: 'Sprache:',
         version: 'Version:',
+        enableTimer: 'Timer Aktivieren',
         score: 'Punkte:',
         question: 'Frage:',
         time: 'Zeit:',

@@ -9,6 +9,7 @@ class SpellerGame {
     this.timeLimit = 30; // 30 seconds per question
     this.timeRemaining = this.timeLimit;
     this.timerInterval = null;
+    this.timerEnabled = true; // Timer enabled by default
     this.translations = this.initTranslations();
 
     this.initializeElements();
@@ -21,6 +22,7 @@ class SpellerGame {
       en: {
         language: 'Language:',
         version: 'Version:',
+        enableTimer: 'Enable Timer',
         score: 'Score:',
         question: 'Question:',
         time: 'Time:',
@@ -43,6 +45,7 @@ class SpellerGame {
       nl: {
         language: 'Taal:',
         version: 'Versie:',
+        enableTimer: 'Timer Inschakelen',
         score: 'Score:',
         question: 'Vraag:',
         time: 'Tijd:',
@@ -65,6 +68,7 @@ class SpellerGame {
       de: {
         language: 'Sprache:',
         version: 'Version:',
+        enableTimer: 'Timer Aktivieren',
         score: 'Punkte:',
         question: 'Frage:',
         time: 'Zeit:',
@@ -101,6 +105,7 @@ class SpellerGame {
     this.totalQuestionsElement = document.getElementById('total-questions');
     this.timerElement = document.getElementById('timer');
     this.versionElement = document.getElementById('app-version');
+    this.timerEnabledCheckbox = document.getElementById('timer-enabled');
   }
 
   async loadData() {
@@ -140,6 +145,19 @@ class SpellerGame {
       this.startGame();
     });
 
+    this.timerEnabledCheckbox.addEventListener('change', () => {
+      this.timerEnabled = this.timerEnabledCheckbox.checked;
+      this.updateTimerVisibility();
+      // If timer is disabled during a question, stop the current timer
+      if (!this.timerEnabled && this.timerInterval) {
+        this.stopTimer();
+      }
+      // If timer is enabled during a question, start the timer
+      else if (this.timerEnabled && !this.timerInterval && !this.gameCompleted) {
+        this.startTimer();
+      }
+    });
+
     this.checkButton.addEventListener('click', () => {
       this.checkAnswer();
     });
@@ -172,6 +190,13 @@ class SpellerGame {
     return this.translations[this.currentLanguage]?.[key] || this.translations.en[key] || key;
   }
 
+  updateTimerVisibility() {
+    const timerContainer = document.querySelector('.timer-container');
+    if (timerContainer) {
+      timerContainer.style.display = this.timerEnabled ? 'block' : 'none';
+    }
+  }
+
   updateUITranslations() {
     // Update elements with data-translate attribute
     document.querySelectorAll('[data-translate]').forEach(element => {
@@ -193,6 +218,7 @@ class SpellerGame {
     this.questions = this.data[this.currentLanguage] || [];
 
     this.updateUITranslations();
+    this.updateTimerVisibility();
 
     if (this.questions.length === 0) {
       this.sentenceElement.textContent = this.getTranslation('noQuestions');
@@ -228,7 +254,9 @@ class SpellerGame {
     this.answerInput.focus();
 
     this.updateQuestionCounter();
-    this.startTimer();
+    if (this.timerEnabled) {
+      this.startTimer();
+    }
   }
 
   loadImageWithFallback(imageSrc, word) {
@@ -353,6 +381,7 @@ class SpellerGame {
     this.feedbackElement.textContent = '';
     this.feedbackElement.className = 'feedback';
     this.timerElement.classList.remove('warning', 'danger');
+    this.updateTimerVisibility();
   }
 
   showPlaceholderImage(word = 'Unknown') {

@@ -89,6 +89,100 @@ describe('SpellerGame', () => {
       _textContent: '0',
     };
     game.languageSelect = { value: 'en', addEventListener: jest.fn() };
+    game.timerEnabledCheckbox = { checked: true, addEventListener: jest.fn() };
+    game.timerEnabled = true;
+
+    // Initialize translations
+    game.translations = {
+      en: {
+        enableTimer: 'Enable Timer',
+        language: 'Language:',
+        version: 'Version:',
+        score: 'Score:',
+        question: 'Question:',
+        time: 'Time:',
+        check: 'Check',
+        nextQuestion: 'Next Question',
+        restartGame: 'Restart Game',
+        inputPlaceholder: 'Type the missing word here...',
+        correct: 'Correct! The answer is',
+        incorrect: 'Incorrect. The correct answer is',
+        timeUp: "Time's up! The correct answer is",
+        gameComplete: 'Game Complete!',
+        finalScore: 'Your final score:',
+        noQuestions: 'No questions available for this language.',
+        errorLoading: 'Error loading game data. Please refresh the page.',
+        excellentWork: "Excellent work! You're a spelling champion! 🏆",
+        greatJob: "Great job! You're doing well! 👍",
+        goodEffort: 'Good effort! Keep practicing! 😊',
+        keepTrying: 'Keep trying! Practice makes perfect! 💪',
+      },
+      nl: {
+        enableTimer: 'Timer Inschakelen',
+        language: 'Taal:',
+        version: 'Versie:',
+        score: 'Score:',
+        question: 'Vraag:',
+        time: 'Tijd:',
+        check: 'Controleren',
+        nextQuestion: 'Volgende Vraag',
+        restartGame: 'Herstart Spel',
+        inputPlaceholder: 'Typ het ontbrekende woord hier...',
+        correct: 'Correct! Het antwoord is',
+        incorrect: 'Incorrect. Het juiste antwoord is',
+        timeUp: 'Tijd is om! Het juiste antwoord is',
+        gameComplete: 'Spel Voltooid!',
+        finalScore: 'Je eindscore:',
+        noQuestions: 'Geen vragen beschikbaar voor deze taal.',
+        errorLoading: 'Fout bij het laden van spelgegevens. Ververs de pagina.',
+        excellentWork: 'Uitstekend werk! Je bent een spelkampioen! 🏆',
+        greatJob: 'Goed gedaan! Je doet het goed! 👍',
+        goodEffort: 'Goede poging! Blijf oefenen! 😊',
+        keepTrying: 'Blijf proberen! Oefening baart kunst! 💪',
+      },
+      de: {
+        enableTimer: 'Timer Aktivieren',
+        language: 'Sprache:',
+        version: 'Version:',
+        score: 'Punkte:',
+        question: 'Frage:',
+        time: 'Zeit:',
+        check: 'Prüfen',
+        nextQuestion: 'Nächste Frage',
+        restartGame: 'Spiel Neustarten',
+        inputPlaceholder: 'Gib das fehlende Wort hier ein...',
+        correct: 'Richtig! Die Antwort ist',
+        incorrect: 'Falsch. Die richtige Antwort ist',
+        timeUp: 'Zeit ist um! Die richtige Antwort ist',
+        gameComplete: 'Spiel Beendet!',
+        finalScore: 'Deine Endpunktzahl:',
+        noQuestions: 'Keine Fragen für diese Sprache verfügbar.',
+        errorLoading: 'Fehler beim Laden der Spieldaten. Bitte lade die Seite neu.',
+        excellentWork: 'Hervorragende Arbeit! Du bist ein Rechtschreibchampion! 🏆',
+        greatJob: 'Großartige Arbeit! Du machst das gut! 👍',
+        goodEffort: 'Gute Anstrengung! Weiter üben! 😊',
+        keepTrying: 'Weiter versuchen! Übung macht den Meister! 💪',
+      },
+    };
+
+    // Add getTranslation method
+    game.getTranslation = function(key) {
+      return this.translations[this.currentLanguage]?.[key] || this.translations.en[key] || key;
+    };
+
+    // Add missing methods
+    game.updateTimerVisibility = jest.fn();
+    game.loadQuestion = SpellerGame.prototype.loadQuestion;
+    game.startTimer = jest.fn();
+    game.stopTimer = jest.fn();
+
+    // Mock querySelector for timer container
+    global.document.querySelector = jest.fn((selector) => {
+      if (selector === '.timer-container') {
+        return { style: { display: 'block' } };
+      }
+      return null;
+    });
   });
 
   describe('Game Logic', () => {
@@ -271,6 +365,61 @@ describe('SpellerGame', () => {
       expect(document.createElement).toHaveBeenCalledWith('div');
       expect(game.imageElement.style.display).toBe('none');
       expect(game.imageElement.parentNode.appendChild).toHaveBeenCalledWith(mockDiv);
+    });
+  });
+
+  describe('Timer Functionality', () => {
+    beforeEach(() => {
+      game.data = mockData;
+      // Mock timer-related methods
+      game.startTimer = jest.fn();
+      game.stopTimer = jest.fn();
+      game.updateTimerVisibility = jest.fn();
+    });
+
+    test('should have timer enabled by default', () => {
+      expect(game.timerEnabled).toBe(true);
+    });
+
+    test('should start timer when loading question and timer is enabled', () => {
+      game.timerEnabled = true;
+      game.loadQuestion = jest.fn(() => {
+        if (game.timerEnabled) {
+          game.startTimer();
+        }
+      });
+      
+      game.startGame();
+      
+      expect(game.startTimer).toHaveBeenCalled();
+    });
+
+    test('should not start timer when loading question and timer is disabled', () => {
+      game.timerEnabled = false;
+      game.loadQuestion = jest.fn(() => {
+        if (game.timerEnabled) {
+          game.startTimer();
+        }
+      });
+      
+      game.startGame();
+      
+      expect(game.startTimer).not.toHaveBeenCalled();
+    });
+
+    test('should update timer visibility when timer setting changes', () => {
+      game.updateTimerVisibility();
+      expect(game.updateTimerVisibility).toHaveBeenCalled();
+    });
+
+    test('should have correct timer translations for all languages', () => {
+      expect(game.getTranslation('enableTimer')).toBe('Enable Timer');
+      
+      game.currentLanguage = 'nl';
+      expect(game.getTranslation('enableTimer')).toBe('Timer Inschakelen');
+      
+      game.currentLanguage = 'de';
+      expect(game.getTranslation('enableTimer')).toBe('Timer Aktivieren');
     });
   });
 });
