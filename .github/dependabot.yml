@@ -31,11 +31,6 @@ updates:
     # Review settings
     reviewers:
       - "commjoen"
-    # Auto-merge minor and patch updates for dev dependencies
-    auto-merge:
-      # Only auto-merge dev dependencies with minor/patch updates
-      dependency-type: "development"
-      update-type: "security"
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
