@@ -1,6 +1,4 @@
 import js from '@eslint/js';
-import importPlugin from 'eslint-plugin-import';
-import promisePlugin from 'eslint-plugin-promise';
 import nPlugin from 'eslint-plugin-n';
 
 export default [
@@ -56,8 +54,6 @@ export default [
       },
     },
     plugins: {
-      import: importPlugin,
-      promise: promisePlugin,
       n: nPlugin,
     },
     rules: {
@@ -70,18 +66,6 @@ export default [
       // Focus on more important issues
       'no-undef': 'error',
       'no-redeclare': 'error',
-
-      // Import rules
-      'import/no-unresolved': 'off', // We're not using modules in this project
-      'import/named': 'off',
-      'import/default': 'off',
-      'import/namespace': 'off',
-
-      // Promise rules
-      'promise/always-return': 'warn',
-      'promise/catch-or-return': 'warn',
-      'promise/param-names': 'warn',
-      'promise/no-return-wrap': 'warn',
 
       // Node rules
       'n/no-missing-import': 'off',
