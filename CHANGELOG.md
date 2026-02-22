@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/commjoen/Speller/compare/v1.0.0...v1.0.1) (2026-02-22)
+
+
+### Bug Fixes
+
+* remove eslint-plugin-import and eslint-plugin-promise incompatible with ESLint v10 ([501f5b4](https://github.com/commjoen/Speller/commit/501f5b47c87b47539e84e49d87c43c26f6c3af3e))
+
 # 1.0.0 (2025-09-29)
 
 
