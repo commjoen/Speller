@@ -115,8 +115,7 @@ class SpellerGame {
       await this.loadVersion();
       this.updateUITranslations();
       this.startGame();
-    } catch (error) {
-      console.error('Error loading data:', error);
+    } catch {
       this.sentenceElement.textContent = this.getTranslation('errorLoading');
     }
   }
@@ -129,8 +128,7 @@ class SpellerGame {
       if (this.versionElement) {
         this.versionElement.textContent = this.version;
       }
-    } catch (error) {
-      console.error('Error loading version:', error);
+    } catch {
       this.version = '1.0.0'; // fallback version
       if (this.versionElement) {
         this.versionElement.textContent = this.version;
@@ -270,13 +268,10 @@ class SpellerGame {
 
     // Set up error handling
     this.imageElement.onerror = () => {
-      console.warn(`Failed to load image: ${imageSrc}`);
       this.showPlaceholderImage(word);
     };
 
-    this.imageElement.onload = () => {
-      console.log(`Successfully loaded image: ${imageSrc}`);
-    };
+    this.imageElement.onload = null;
 
     // Attempt to load the image
     this.imageElement.src = imageSrc;
@@ -562,7 +557,6 @@ class PWAManager {
     if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js');
-        console.log('Service Worker registered successfully:', registration);
 
         // Handle service worker updates
         registration.addEventListener('updatefound', () => {
@@ -578,15 +572,14 @@ class PWAManager {
         setInterval(() => {
           registration.update();
         }, 60000); // Check every minute
-      } catch (error) {
-        console.error('Service Worker registration failed:', error);
+      } catch {
+        this.hideInstallButton();
       }
     }
   }
 
   setupInstallPrompt() {
     window.addEventListener('beforeinstallprompt', e => {
-      console.log('beforeinstallprompt event fired');
       e.preventDefault();
       this.deferredPrompt = e;
       this.showInstallButton();
@@ -644,7 +637,6 @@ class PWAManager {
 
   async installApp() {
     if (!this.deferredPrompt) {
-      console.log('No install prompt available');
       return;
     }
 
@@ -653,21 +645,17 @@ class PWAManager {
       const { outcome } = await this.deferredPrompt.userChoice;
 
       if (outcome === 'accepted') {
-        console.log('User accepted the install prompt');
         this.hideInstallButton();
-      } else {
-        console.log('User dismissed the install prompt');
       }
 
       this.deferredPrompt = null;
-    } catch (error) {
-      console.error('Error during app installation:', error);
+    } catch {
+      this.deferredPrompt = null;
     }
   }
 
   handleAppInstalled() {
     window.addEventListener('appinstalled', () => {
-      console.log('App was installed successfully');
       this.hideInstallButton();
       this.showInstalledMessage();
     });
@@ -783,11 +771,10 @@ document.addEventListener('DOMContentLoaded', () => {
   pwaManager.setupNetworkStatusHandling();
 
   // Initialize the game
-  const game = new SpellerGame();
+  new SpellerGame();
 
   // Add PWA-specific features to the game
   if (pwaManager.isRunningAsPWA()) {
-    console.log('Running as PWA');
     // Add any PWA-specific game features here
     document.body.classList.add('pwa-mode');
   }

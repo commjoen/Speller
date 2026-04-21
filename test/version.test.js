@@ -68,16 +68,11 @@ describe('Version Loading', () => {
 
     test('should handle version loading error gracefully', async () => {
       global.fetch.mockRejectedValueOnce(new Error('Network error'));
-      
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
 
       await game.loadVersion();
 
-      expect(consoleSpy).toHaveBeenCalledWith('Error loading version:', expect.any(Error));
       expect(game.version).toBe('1.0.0'); // fallback version
       expect(game.versionElement.textContent).toBe('1.0.0');
-      
-      consoleSpy.mockRestore();
     });
 
     test('should handle missing version element gracefully', async () => {
@@ -153,15 +148,10 @@ describe('Version Loading', () => {
         .mockResolvedValueOnce({ json: () => Promise.resolve(mockData) })
         .mockRejectedValueOnce(new Error('Package.json not found'));
 
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-
       await game.loadData();
 
       expect(game.data).toEqual(mockData);
       expect(game.version).toBe('1.0.0'); // fallback
-      expect(consoleSpy).toHaveBeenCalledWith('Error loading version:', expect.any(Error));
-      
-      consoleSpy.mockRestore();
     });
   });
 });
