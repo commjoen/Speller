@@ -571,7 +571,7 @@ class PWAManager {
           registration.update();
         }, 60000); // Check every minute
       } catch {
-        this.deferredPrompt = null;
+        return;
       }
     }
   }
