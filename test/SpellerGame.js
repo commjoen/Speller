@@ -116,8 +116,7 @@ class SpellerGame {
       await this.loadVersion();
       this.updateUITranslations();
       this.startGame();
-    } catch (error) {
-      console.error('Error loading data:', error);
+    } catch {
       this.sentenceElement.textContent = this.getTranslation('errorLoading');
     }
   }
@@ -130,8 +129,7 @@ class SpellerGame {
       if (this.versionElement) {
         this.versionElement.textContent = this.version;
       }
-    } catch (error) {
-      console.error('Error loading version:', error);
+    } catch {
       this.version = '1.0.0'; // fallback version
       if (this.versionElement) {
         this.versionElement.textContent = this.version;
