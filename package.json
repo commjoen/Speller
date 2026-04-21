@@ -1,6 +1,6 @@
 {
   "name": "speller-game",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A multilingual spelling game that helps users learn vocabulary in English, Dutch, and German",
   "main": "index.html",
   "scripts": {
