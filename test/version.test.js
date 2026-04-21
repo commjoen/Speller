@@ -69,7 +69,7 @@ describe('Version Loading', () => {
     test('should handle version loading error gracefully', async () => {
       global.fetch.mockRejectedValueOnce(new Error('Network error'));
 
-      await game.loadVersion();
+      await expect(game.loadVersion()).resolves.toBeUndefined();
 
       expect(game.version).toBe('1.0.0'); // fallback version
       expect(game.versionElement.textContent).toBe('1.0.0');
@@ -148,7 +148,7 @@ describe('Version Loading', () => {
         .mockResolvedValueOnce({ json: () => Promise.resolve(mockData) })
         .mockRejectedValueOnce(new Error('Package.json not found'));
 
-      await game.loadData();
+      await expect(game.loadData()).resolves.toBeUndefined();
 
       expect(game.data).toEqual(mockData);
       expect(game.version).toBe('1.0.0'); // fallback

@@ -234,8 +234,12 @@ self.addEventListener('sync', event => {
 
 // Update caches with fresh content
 async function updateCaches() {
-  const cache = await caches.open(STATIC_CACHE_NAME);
-  await cache.addAll(STATIC_RESOURCES);
+  try {
+    const cache = await caches.open(STATIC_CACHE_NAME);
+    await cache.addAll(STATIC_RESOURCES);
+  } catch {
+    return;
+  }
 }
 
 // Handle push notifications (for future features)
