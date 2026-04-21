@@ -271,8 +271,6 @@ class SpellerGame {
       this.showPlaceholderImage(word);
     };
 
-    this.imageElement.onload = null;
-
     // Attempt to load the image
     this.imageElement.src = imageSrc;
   }
@@ -573,7 +571,7 @@ class PWAManager {
           registration.update();
         }, 60000); // Check every minute
       } catch {
-        this.hideInstallButton();
+        this.deferredPrompt = null;
       }
     }
   }
