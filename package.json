@@ -30,11 +30,11 @@
     "@eslint/js": "^10.0.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "eslint": "^10.5.0",
-    "eslint-plugin-n": "^18.1.0",
+    "eslint": "^10.6.0",
+    "eslint-plugin-n": "^18.2.1",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
-    "prettier": "^3.8.4",
+    "prettier": "^3.9.4",
     "semantic-release": "^25.0.5"
   },
   "dependencies": {
