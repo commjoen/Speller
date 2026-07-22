@@ -35,7 +35,7 @@
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "prettier": "^3.9.5",
-    "semantic-release": "^25.0.7"
+    "semantic-release": "^25.0.8"
   },
   "dependencies": {
     "serve": "^14.2.6"
