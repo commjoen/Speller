@@ -38,7 +38,7 @@
     "semantic-release": "^25.0.9"
   },
   "dependencies": {
-    "serve": "^14.2.7"
+    "serve": "^14.2.8"
   },
   "jest": {
     "testEnvironment": "jsdom",
